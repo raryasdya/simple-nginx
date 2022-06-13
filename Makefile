@@ -6,9 +6,6 @@ all:
 	screen -d -m uvicorn services.update:app --port 8001
 	screen -d -m uvicorn services.read:app --port 8002
 
-	@echo "\n------ cleaning up nginx ------"
-	sudo rm /etc/nginx/sites-enabled/main.conf
-
 	@echo "\n------ setting up nginx ------"
 	sudo cp ./reverse-proxy.conf /etc/nginx/sites-available/main.conf
 	sudo ln -s /etc/nginx/sites-available/main.conf /etc/nginx/sites-enabled/
@@ -16,6 +13,7 @@ all:
 
 clean:
 	@echo "------ cleaning up ------"
+	sudo rm /etc/nginx/sites-enabled/main.conf
 	sudo rm /etc/nginx/sites-available/main.conf
 
 	@echo "------ stopping servers ------"
