@@ -11,7 +11,7 @@ class Student(BaseModel):
     name: str
 
 
-@app.post("/update")
+@app.post("/")
 def main(student: Student):
 
     db.table("students").insert({"npm": student.npm, "name": student.name}).execute()
