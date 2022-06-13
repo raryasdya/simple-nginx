@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+from database import db
 
 app = FastAPI()
 
@@ -13,7 +14,7 @@ class Student(BaseModel):
 @app.post("/update")
 def main(student: Student):
 
-    # TODO: save data to database
+    db.table("students").insert({"npm": student.npm, "name": student.name}).execute()
 
     return {
         "status": 'OK',
