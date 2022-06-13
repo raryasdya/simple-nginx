@@ -3,8 +3,8 @@ all:
 	pip3 install -r requirements.txt
 
 	@echo "\n------ running server ------"
-	screen -d -m uvicorn services.update:app --port 8001
-	screen -d -m uvicorn services.read:app --port 8002
+	screen -d -m uvicorn services.update:app --host 0.0.0.0 --port 8001
+	screen -d -m uvicorn services.read:app --host 0.0.0.0 --port 8002
 
 	@echo "\n------ setting up nginx ------"
 	sudo cp ./reverse-proxy.conf /etc/nginx/sites-available/main.conf
@@ -16,8 +16,7 @@ clean:
 	sudo rm /etc/nginx/sites-enabled/main.conf
 	sudo rm /etc/nginx/sites-available/main.conf
 
-	@echo "------ stopping servers ------"
-	screen -X -S update quit
-	screen -X -S read quit
+	@echo "------ stopping all servers ------"
+	screen -ls | grep Detached | cut -d. -f1 | awk '{print $1}' | xargs kill
 
 	@echo "\n------ done ------"
